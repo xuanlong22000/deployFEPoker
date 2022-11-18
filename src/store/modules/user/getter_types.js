@@ -1,0 +1,11 @@
+const gettersType = {
+  GET_CURRENT_USER: 'user/GET_CURRENT_USER',
+  GET_LIST_USERS: 'user/GET_LIST_USERS',
+  GET_USER_NOT_MEMBER: 'user/GET_USER_NOT_MEMBER',
+  GET_PROFILE: 'user/GET_PROFILE',
+  GET_IS_LOGIN: 'user/GET_IS_LOGIN',
+  GET_WITH_SYSTEM_ROLE: 'user/GET_WITH_SYSTEM_ROLE',
+  GET_IS_ONLINE: 'user/GET_IS_ONLINE',
+};
+
+export default gettersType;

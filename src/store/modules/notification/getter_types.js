@@ -1,0 +1,9 @@
+const getterTypes = {
+  GET_NOTIFICATION_LIST: 'notification/GET_NOTIFICATION_LIST',
+  GET_NOTIFICATION_LIST_POPUP: 'notification/GET_NOTIFICATION_LIST_POPUP',
+  GET_NOTIFICATION_QUANTITY: 'notification/GET_NOTIFICATION_QUANTITY',
+  GET_UNREAD_COUNT: 'notification/GET_UNREAD_COUNT',
+  GET_SEARCH_TEXT: 'notification/GET_SEARCH_TEXT'
+};
+
+export default getterTypes;
