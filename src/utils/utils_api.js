@@ -31,7 +31,7 @@ service.interceptors.response.use(
     return Promise.resolve(response);
   },
   async function (error) {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       if (router.currentRoute.name === 'landing-page')
         return Promise.reject(error);
       const refreshToken = localStorage.getService().getRefreshToken();
@@ -55,13 +55,17 @@ service.interceptors.response.use(
         'Bearer ' + data.userToken;
       return service(error.config);
     }
-    if (error.response.status === 403) {
+    if (error.response?.status === 403) {
       store.commit(appMutationTypes.SET_SNACKBAR, {
         type: 'warning',
         visible: true,
         text: error.response.statusText,
       });
-      const listRouteNotDirect = ['project-detail', 'user-management', 'notifications'];
+      const listRouteNotDirect = [
+        'project-detail',
+        'user-management',
+        'notifications',
+      ];
       if (listRouteNotDirect.includes(router.currentRoute.name)) return;
       router.push({ name: 'project-list' });
       return;
@@ -75,11 +79,11 @@ service.interceptors.response.use(
     //   router.push({ name: 'project-list' });
     //   return;
     // }
-    if (error.response.status === 404) {
+    if (error.response?.status === 404) {
       router.replace({ path: '/error/not-found' });
       return;
     }
-    if (error.response.status === 500) {
+    if (error.response?.status === 500) {
       router.push({ name: 'internal-server' });
       return;
     }
