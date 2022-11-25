@@ -68,7 +68,7 @@ const actions = {
         commit('SET_SNACKBAR', {
           type: 'success',
           visible: true,
-          text: res.statusText,
+          text: MESSAGE.UPDATE_SUCCESS,
         });
       }
     } catch (error) {

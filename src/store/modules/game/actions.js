@@ -37,7 +37,10 @@ const actions = {
           if (err.response.status === 500) {
             router.reload();
           } else if (err.response.status === 400) {
-            if (router.currentRoute.name === 'notification-page' && err.response.statusText === MESSAGE.BACKLOG_NOT_EXISTED) {
+            if (
+              router.currentRoute.name === 'notification-page' &&
+              err.response.statusText === MESSAGE.BACKLOG_NOT_EXISTED
+            ) {
               commit('SET_SNACKBAR', {
                 type: 'error',
                 visible: true,
@@ -141,12 +144,12 @@ const actions = {
       });
     };
     kickPlayerApi(email, gameId)
-      .then((res) => {
+      .then(() => {
         getListUser();
         commit('SET_SNACKBAR', {
           type: 'success',
           visible: true,
-          text: res.statusText,
+          text: MESSAGE.KICK_PLAYER_SUCCESS,
         });
       })
       .catch((error) => {
@@ -168,7 +171,7 @@ const actions = {
         commit('SET_SNACKBAR', {
           type: 'success',
           visible: true,
-          text: data.statusText,
+          text: MESSAGE.FINISH_GAME_SUCCESS,
         });
         commit(mutationTypes.SET_IS_FINISH_GAME, true);
         return true;
@@ -176,7 +179,7 @@ const actions = {
         commit('SET_SNACKBAR', {
           type: 'error',
           visible: true,
-          text: data.statusText,
+          text: MESSAGE.PLAYER_NOT_CHOOSE_CARD,
         });
         return false;
       }
@@ -184,7 +187,7 @@ const actions = {
       commit('SET_SNACKBAR', {
         type: 'error',
         visible: true,
-        text: error.response.statusText,
+        text: MESSAGE.PLAYER_NOT_CHOOSE_CARD,
       });
       return false;
     }
@@ -200,7 +203,7 @@ const actions = {
           commit('SET_SNACKBAR', {
             type: 'success',
             visible: true,
-            text: data.statusText,
+            text: MESSAGE.RESET_GAME_SUCCESS,
           });
         } else {
           commit('SET_SNACKBAR', {
@@ -231,12 +234,12 @@ const actions = {
         });
       };
       invitePlayersApi({ players: payload.players }, payload.game_id)
-        .then((res) => {
+        .then(() => {
           getList();
           commit('SET_SNACKBAR', {
             type: 'success',
             visible: true,
-            text: res.statusText,
+            text: MESSAGE.INVITE_PLAYERS_SUCCESS,
           });
         })
         .catch((error) => {
@@ -266,7 +269,7 @@ const actions = {
           commit('SET_SNACKBAR', {
             type: 'success',
             visible: true,
-            text: data.statusText,
+            text: MESSAGE.START_GAME_SUCCESS,
           });
           commit(mutationTypes.SET_IS_START_GAME, true);
         } else {
@@ -294,7 +297,7 @@ const actions = {
           commit('SET_SNACKBAR', {
             type: 'success',
             visible: true,
-            text: data.statusText,
+            text: MESSAGE.DELETE_GAME_SUCCESS,
           });
         } else {
           commit('SET_SNACKBAR', {
@@ -361,7 +364,7 @@ const actions = {
       })
       .catch((err) => {
         context.commit(mutationTypes.ACCESS_GAME, '');
-        if (err.response.statusText === "Game already started") {
+        if (err.response.statusText === 'Game already started') {
           context.commit(appMutationTypes.SET_SNACKBAR, {
             type: 'error',
             visible: true,
@@ -377,11 +380,11 @@ const actions = {
   },
   [actionTypes.SUBMIT_GAME]: (context, data) => {
     submitGame(data)
-      .then((res) => {
+      .then(() => {
         context.commit(appMutationTypes.SET_SNACKBAR, {
           type: 'success',
           visible: true,
-          text: res.statusText,
+          text: MESSAGE.GAME_SUBMIT_SUCCESS,
         });
         socket.emitSubmitgame(
           data.email,
@@ -392,11 +395,37 @@ const actions = {
       })
       .catch((err) => {
         if (err.response.status === 400) {
-          context.commit(appMutationTypes.SET_SNACKBAR, {
-            type: 'error',
-            visible: true,
-            text: err.response.statusText,
-          });
+          if (data.selectedCard > 999) {
+            context.commit(appMutationTypes.SET_SNACKBAR, {
+              type: 'error',
+              visible: true,
+              text: MESSAGE.SELECT_CARD_MUST_A_NUMBER,
+            });
+          } else if (!data.selectedCard && data.selectedCard !== 0) {
+            context.commit(appMutationTypes.SET_SNACKBAR, {
+              type: 'error',
+              visible: true,
+              text: MESSAGE.NOT_EMPTY_CARD,
+            });
+          } else if (typeof data.selectedCard !== 'number') {
+            context.commit(appMutationTypes.SET_SNACKBAR, {
+              type: 'error',
+              visible: true,
+              text: MESSAGE.SELECT_CARD_MUST_A_NUMBER,
+            });
+          } else if (!data.comment) {
+            context.commit(appMutationTypes.SET_SNACKBAR, {
+              type: 'error',
+              visible: true,
+              text: MESSAGE.NOT_EMPTY_COMMENT,
+            });
+          } else if (data.comment.length > 255) {
+            context.commit(appMutationTypes.SET_SNACKBAR, {
+              type: 'error',
+              visible: true,
+              text: MESSAGE.OVER_LENGTH_COMMENT,
+            });
+          }
         }
       });
   },
@@ -412,7 +441,7 @@ const actions = {
       context.commit(appMutationTypes.SET_SNACKBAR, {
         type: 'success',
         visible: true,
-        text: res.statusText,
+        text: MESSAGE.CREATE_SUCCESS,
       });
       context.commit(appMutationTypes.SET_CREATE_RESULT, res.data);
       return res.statusText;

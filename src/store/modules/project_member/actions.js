@@ -1,6 +1,9 @@
-
 import action_types from './action_types';
-import { addMembers, checkIsMember, checkIsProjectManagement } from '@/api/api_project_member';
+import {
+  addMembers,
+  checkIsMember,
+  checkIsProjectManagement,
+} from '@/api/api_project_member';
 import appMutationTypes from '@/store/app/mutation_types';
 import MESSAGE from '@/utils/utils_message';
 const actions = {
@@ -24,7 +27,7 @@ const actions = {
         //   visible: true,
         //   text: res.statusText,
         // });
-        return { type: 'success', text: res.statusText };
+        return { type: 'success', text: MESSAGE.ADD_MEMBER_SUCCESS };
       }
       commit(appMutationTypes.SET_CREATE_RESULT, true);
       dispatch('project/ACT_GET_PROJECT_BY_ID', { id: payload.projectId });
@@ -38,13 +41,9 @@ const actions = {
       //   text: error.response.statusText,
       // });
       return { type: 'error', text: error.response.statusText };
-
     }
   },
-  [action_types.ACT_FETCH_IS_MEMBER]: async (
-    { commit },
-    payload
-  ) => {
+  [action_types.ACT_FETCH_IS_MEMBER]: async ({ commit }, payload) => {
     try {
       const res = await checkIsMember(payload);
       if (res.status === 400) {
@@ -58,7 +57,7 @@ const actions = {
             text: MESSAGE.MENBER_DOES_NOT_EXITSTS,
           });
         }
-        return res.data
+        return res.data;
       }
       return res.statusText;
     } catch (error) {
@@ -82,13 +81,13 @@ const actions = {
             text: MESSAGE.NOT_PM_IN_PROJECT,
           });
         }
-        return res.data
+        return res.data;
       }
       return res.statusText;
     } catch (error) {
       return { type: 'error', text: error.response.statusText };
     }
-  }
+  },
 };
 
 export default actions;

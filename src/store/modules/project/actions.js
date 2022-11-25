@@ -63,7 +63,7 @@ const actions = {
         context.commit('SET_SNACKBAR', {
           type: 'success',
           visible: true,
-          text: res.statusText,
+          text: MESSAGE.CREATE_SUCCESS,
         });
         return res.data;
       } else {
@@ -131,7 +131,7 @@ const actions = {
           context.commit('SET_SNACKBAR', {
             type: 'success',
             visible: true,
-            text: res.statusText,
+            text: MESSAGE.UPDATE_SUCCESS,
           });
           router.push('/project');
           return true;
@@ -199,7 +199,7 @@ const actions = {
       context.commit(appMutationTypes.SET_SNACKBAR, {
         type: 'success',
         visible: true,
-        text: res.statusText,
+        text: MESSAGE.DELETE_SUCCESS,
       });
       context.commit(appMutationTypes.SET_DELETE_RESULT, true);
       return true;
